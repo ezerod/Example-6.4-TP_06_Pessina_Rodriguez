@@ -96,6 +96,7 @@ typedef struct{
 
 //=====[Declaration and initialization of public global objects]===============
 
+//GRUPO. Pines utilizados. Interfaz SPI. Nucleo es master - Display es slave
 DigitalOut displayD0( D0 );
 DigitalOut displayD1( D1 );
 DigitalOut displayD2( D2 );
@@ -109,7 +110,9 @@ DigitalOut displayEn( D9 );
 
 I2C i2cPcf8574( I2C1_SDA, I2C1_SCL ); 
 
+//GRUPO. CS = D10
 DigitalOut spiSt7920ChipSelect(SPI1_CS);
+//GRUPO. Instancia del objeto spiSt7920 de la clase SPI
 SPI spiSt7920(SPI1_MOSI, SPI1_MISO, SPI1_SCK);
 
 //=====[Declaration of external public global variables]=======================
@@ -317,6 +320,10 @@ static void displayCodeWrite( bool type, uint8_t dataBus )
         break;
   
         case DISPLAY_CONNECTION_SPI:
+
+        //GRUPO: lock() es un metodo de la clase SPI, invocando esa funcion se restringe
+        //el canal entre el maestro y el esclavo selecto (mediante CS).
+        //unlock() libera el canal SPI, permitiendo la comunicación con otros dispositivos
             spiSt7920.lock();
             spiSt7920ChipSelect = ON;
             if ( type == DISPLAY_RS_INSTRUCTION )           
