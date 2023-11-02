@@ -1,0 +1,1 @@
+Dado que no se dispone del display grafico, puede verse en la captura como la placa se intenta comunicar continuamente con el display, pero no recibe respuesta
